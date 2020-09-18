@@ -19,9 +19,9 @@
             #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
-            //代表排除不支持MRT的硬件
+            //代表排除不支持MRT的硬件 Multiple Render Target
             #pragma exclude_renderers norm
-            #pragma multi_compile __ UNITY_HDR_ON
+            #pragma multi_compile __ UNITY_HDR_ON   //HDR
 
 
             #include "UnityCG.cginc"

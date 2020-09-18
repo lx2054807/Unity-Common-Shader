@@ -59,8 +59,8 @@
                 fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(i.normal, i.lightdir));
 
                 fixed3 view = normalize(UnityWorldSpaceViewDir(i.worldpos));
-                fixed3 halfDir = normalize(view + i.lightdir);
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(i.normal, halfDir)), 1 / _Gloss);
+                fixed3 halfDir = normalize(view + i.lightdir);  // 半角计算: 光源与视线的中间位置向量 (v + l)/|v + l|
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(i.normal, halfDir)), 1 / _Gloss);   //BlingPhong模型: 高光与半角和法线的点乘的N次方成正比
 
                 return fixed4(ambient + diffuse + specular, 1);
             }

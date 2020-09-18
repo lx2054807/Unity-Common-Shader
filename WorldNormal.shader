@@ -3,8 +3,8 @@
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _BumpMap("Normal", 2D) = "bump" {}
-        _BumpScale("NormalScale", range(0,5)) = 1
+        _BumpMap("Normal", 2D) = "bump" {}  // 法线贴图 又叫凹凸贴图
+        _BumpScale("NormalScale", range(0,5)) = 1   //法线强度
         _Diffuse("Diffuse", Color) = (1,1,1,1)
         _Specular("Specular", Color) = (1,1,1,1)
         _Gloss("Gloss", range(0,2)) = 1 }
@@ -51,9 +51,9 @@
                 o.uv.zw = TRANSFORM_TEX(v.texcoord, _BumpMap);
                 fixed3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
-                fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);
-                fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w;
-                o.tc0 = float4(worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x);
+                fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);             // 取到世界空间下切线T轴
+                fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w;  // 计算世界空间下B轴
+                o.tc0 = float4(worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x); // 传入TBN以及世界空间位置
                 o.tc1 = float4(worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y);
                 o.tc2 = float4(worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z);
                 return o;
@@ -68,7 +68,7 @@
                 fixed4 packedNormal = tex2D(_BumpMap, i.uv.zw);
                 fixed3 tanNormal = UnpackNormal(packedNormal);
                 tanNormal.xy *= _BumpScale;
-                float3 worldNormal = normalize(float3(dot(i.tc0.xyz, tanNormal), dot(i.tc1.xyz, tanNormal), dot(i.tc2.xyz, tanNormal)));
+                float3 worldNormal = normalize(float3(dot(i.tc0.xyz, tanNormal), dot(i.tc1.xyz, tanNormal), dot(i.tc2.xyz, tanNormal)));    //计算世界坐标下的法线
 
                 fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
                 fixed3 albedo = tex2D(_MainTex, i.uv.xy).rgb;

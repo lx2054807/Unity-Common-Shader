@@ -15,7 +15,7 @@
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard alphatest:_CutOff noshadow addshadow
+        #pragma surface surf Standard alphatest:_CutOff noshadow addshadow  //只需要改掉Tags并且在此改变编译指令
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0

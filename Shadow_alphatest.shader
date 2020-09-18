@@ -198,7 +198,7 @@
 				float4 frag(v2f i) : SV_Target
 				{
 					fixed4 col = tex2D(_MainTex, i.uv);
-					clip(col.a - _CutOff);
+					clip(col.a - _CutOff);	// 裁剪部分阴影
 					SHADOW_CASTER_FRAGMENT(i)
 				}
 				ENDCG

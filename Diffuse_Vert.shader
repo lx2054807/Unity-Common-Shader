@@ -36,10 +36,10 @@
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
-                fixed3 Normal = UnityObjectToWorldNormal(v.normal);
-                fixed3 lightDir = normalize(UnityWorldSpaceLightDir(mul(unity_ObjectToWorld, v.vertex).xyz));
-                fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(Normal, lightDir));
+                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;  //环境光计算
+                fixed3 Normal = UnityObjectToWorldNormal(v.normal); //世界法线
+                fixed3 lightDir = normalize(UnityWorldSpaceLightDir(mul(unity_ObjectToWorld, v.vertex).xyz));   //光线方向
+                fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(Normal, lightDir));   //漫反射计算,反射光源强度与法线与光源间夹角的余弦成正比 (法线点乘光源) 
                 o.color = ambient + diffuse;
                 return o;
             }

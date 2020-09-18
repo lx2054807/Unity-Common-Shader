@@ -4,9 +4,9 @@
     {
         _MainTex("Texture", 2D) = "white" {}
         _CubeMap("CubeMap", Cube) = "_Skybox" {}
-        _FresnelScale("FresnelScale", range(0,1)) = 1
-        _FresnelInten("FresnelInten", range(0,5)) = 5
-        _RefractRate("RefractRate", range(0,1)) = 0.5
+        _FresnelScale("FresnelScale", range(0,1)) = 1   //菲涅尔程度
+        _FresnelInten("FresnelInten", range(0,5)) = 5   //菲涅尔强度
+        _RefractRate("RefractRate", range(0,1)) = 0.5   //折射率
     }
     SubShader
     {
@@ -53,8 +53,8 @@
                 fixed3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.worldViewDir = UnityWorldSpaceViewDir(worldPos);
-                o.worldRefl = reflect(-o.worldViewDir, o.worldNormal);
-                o.worldRefr = refract(normalize(-o.worldViewDir), normalize(o.worldNormal), _RefractRate);
+                o.worldRefl = reflect(-o.worldViewDir, o.worldNormal);  //计算反射
+                o.worldRefr = refract(normalize(-o.worldViewDir), normalize(o.worldNormal), _RefractRate);  //计算折射
                 return o;
             }
 
@@ -65,10 +65,10 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-                float fresnel = _FresnelScale + (1 - _FresnelScale) * pow(1 - dot(normalize(i.worldNormal), normalize(i.worldViewDir)), _FresnelInten);
+                float fresnel = _FresnelScale + (1 - _FresnelScale) * pow(1 - dot(normalize(i.worldNormal), normalize(i.worldViewDir)), _FresnelInten); //菲涅尔公式 F + (1-F) * pow(1-normal点乘viewdir, I)
 
-                float3 re = lerp(reflection, refraction, fresnel);
-                col.rgb = lerp(col.rgb, re, fresnel);
+                float3 re = lerp(reflection, refraction, fresnel);  // 反射与折射插值
+                col.rgb = lerp(col.rgb, re, fresnel);   // 颜色插值
                 return col;
             }
             ENDCG

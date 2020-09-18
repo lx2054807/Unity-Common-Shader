@@ -3,7 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Range("Range", range(-2,2)) = 1
+        _Range("Range", range(-2,2)) = 1            
         _Frequency("Frequency", range(0,60)) = 20
         _Speed("Speed", range(0,5)) = 1
     }
@@ -41,9 +41,9 @@
             v2f vert (appdata v)
             {
                 v2f o;
-                float timer = _Time.y * _Speed;
-                float wave = _Range * sin(timer + v.vertex.x * _Frequency);
-                v.vertex.y += wave;
+                float timer = _Time.y * _Speed; // 利用_Time获取时间
+                float wave = _Range * sin(timer + v.vertex.x * _Frequency); // sin函数构成的波浪形状
+                v.vertex.y += wave;     // 只改变顶点的Y 使物体形成上下波浪动画 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;

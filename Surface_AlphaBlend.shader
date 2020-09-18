@@ -9,6 +9,7 @@
     }
     SubShader
     {
+            // SurfaceShader的alphablend只需要改掉Tags 并且在预编译处声明alphablend既可
         Tags { "RenderType"="Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True"}
         LOD 200
 

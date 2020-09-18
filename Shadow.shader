@@ -41,7 +41,7 @@
 				fixed3 worldLight : TEXCOORD1;
 				fixed3 worldPos : TEXCOORD2;
 				float3 vertexLight:TEXCOORD3;
-				SHADOW_COORDS(4)
+				SHADOW_COORDS(4)	//结构体中加入阴影
 			};
 
 			v2f vert(appdata v)
@@ -61,7 +61,7 @@
 				o.vertexLight += vertexLight;
 #endif
 #endif
-				TRANSFER_SHADOW(o);
+				TRANSFER_SHADOW(o);	// 计算阴影
 				return o;
 			}
 
@@ -78,7 +78,7 @@
 				//仅仅计算阴影
 				//fixed shadow = SHADOW_ATTENUATION(i);
 
-				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
+				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);	
 
 				return fixed4(ambient + (diffuse + specular) * atten + i.vertexLight,1);
 			}
@@ -144,6 +144,7 @@
 			ENDCG
 		}
 
+		// 使用自带SHADER中的阴影投射
 		UsePass "Legacy Shaders/VertexLit/ShadowCaster"
 
 				//Pass

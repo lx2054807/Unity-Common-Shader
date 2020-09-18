@@ -44,6 +44,7 @@
                 return o;
             }
 
+            // 计算放在片元着色器中, 效果更好
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;

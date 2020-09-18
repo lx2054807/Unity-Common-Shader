@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _CubeMap ("CubeMap", CUBE) = "" {}
+        _CubeMap ("CubeMap", CUBE) = "" {}  
     }
     SubShader
     {
@@ -35,14 +35,14 @@
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.vertexLocal = v.vertex.xyz;
+                o.vertexLocal = v.vertex.xyz;   
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = texCUBE(_CubeMap, i.vertexLocal);
+                fixed4 col = texCUBE(_CubeMap, i.vertexLocal);// 采样cubemap
                 return col;
             }
             ENDCG

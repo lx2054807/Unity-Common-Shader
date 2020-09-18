@@ -6,6 +6,12 @@
 		_Specular("Specular",Color) = (1,1,1,1)
 		_Gloss("Gloss", Range(0,4)) = 1
 	}
+		/*
+		* 复杂光照计算 主平行光使用ForwardBase
+		* 副光源使用ForwardAdd
+		* 均为逐片元计算, (逐顶点和球谐不进行计算)
+		* ForwardAdd Pass中默认不支持雾效, 如需要打开需要再预编译头加入fullshadow
+		*/
 		SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
@@ -50,9 +56,10 @@
 				o.worldNormal = UnityObjectToWorldNormal(v.normal);
 				o.worldLight = normalize(UnityWorldSpaceLightDir(o.worldPos));
 #ifdef LIGHTMAP_OFF
-				float3 shLight = ShadeSH9(float4(v.normal, 1.0));
+				float3 shLight = ShadeSH9(float4(v.normal, 1.0));	// 球谐函数计算光照
 				o.vertexLight = shLight;
 #ifdef VERTEXLIGHT_ON
+				// 逐顶点计算
 				float3 vertexLight = Shade4PointLights(unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
 					unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb,
 					unity_4LightAtten0, o.worldPos, o.worldNormal);

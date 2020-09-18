@@ -10,14 +10,12 @@
         {
             Tags { "RenderType" = "TransparentCutOut" "Queue" = "AlphaTest-1" "IgnoreProjector" = "True"}//alphatest = 2450
             LOD 100
-            Cull Off
+            Cull Off    // 关闭裁剪, 渲染双面
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -30,7 +28,6 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
                 float3 worldPos : TEXCOORD1;
             };
@@ -45,7 +42,6 @@
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
 
@@ -55,7 +51,6 @@
                 fixed4 col = tex2D(_MainTex, i.uv);
                 clip(col.a - _CutOff);  // discard frag whose alpha < _CutOff
                 // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
             ENDCG

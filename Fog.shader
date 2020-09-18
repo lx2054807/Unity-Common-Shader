@@ -11,6 +11,17 @@
 
         Pass
         {
+            /* 默认创建的UnlitShader就是最简单的雾效shader
+                需要再rendersetting中开启雾效后才有效果
+                场景显示雾效需要打开雾效开关
+                受雾效影响需要            #pragma multi_compile_fog
+                v2f结构中定义:
+                UNITY_FOG_COORDS(1)
+                顶点函数中处理:
+                UNITY_TRANSFER_FOG(o,o.vertex);
+                片段函数中处理:
+                UNITY_APPLY_FOG(i.fogCoord, col);
+            */
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

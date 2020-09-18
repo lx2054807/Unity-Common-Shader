@@ -49,9 +49,9 @@
                 fixed3 lightDir = normalize(UnityWorldSpaceLightDir(worldPos));
                 fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(Normal, lightDir));
 
-                fixed3 reflectDir = normalize(reflect(-lightDir, Normal));
-                fixed3 view = normalize(UnityWorldSpaceViewDir(worldPos));
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(view, reflectDir)), 1 / _Gloss);
+                fixed3 reflectDir = normalize(reflect(-lightDir, Normal));  // 反射光计算
+                fixed3 view = normalize(UnityWorldSpaceViewDir(worldPos));  // 视线计算
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(view, reflectDir)), 1 / _Gloss); // Phong模型下高光计算: 与视线与反射光点乘的N(高光系数)次方成正比
                 o.color = ambient + diffuse + specular;
                 return o;
             }

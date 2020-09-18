@@ -3,11 +3,11 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _CutOff("CutOff", Range(0,1)) = 0.5
+        _CutOff("CutOff", Range(0,1)) = 0.5     // 裁剪程度
     }
     SubShader
     {
-        Tags { "RenderType"="TransparentCutOut" "Queue" = "AlphaTest-1" "IgnoreProjector" = "True"}//alphatest = 2450
+        Tags { "RenderType"="TransparentCutOut" "Queue" = "AlphaTest-1" "IgnoreProjector" = "True"}//alphatest = 2450   //需要替换tags 
         LOD 100
 
         Pass
@@ -49,7 +49,7 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
                 clip(col.a - _CutOff);  // discard frag whose alpha < _CutOff
-                clip(i.worldPos.y - 0);
+                clip(i.worldPos.y - 0); // discard frag whose worldpos.y < 0
                 return col;
             }
             ENDCG
