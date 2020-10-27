@@ -4,7 +4,7 @@
     {
         _Diffuse("Diffuse", Color) = (1,1,1,1)
         _Specular("Specular", Color) = (1,1,1,1)
-        _Gloss("Gloss", range(0,2)) = 1
+        _Gloss("Gloss", range(8.0,256)) = 10
 
     }
         SubShader
@@ -51,7 +51,7 @@
 
                 fixed3 reflectDir = normalize(reflect(-lightDir, Normal));  // 反射光计算
                 fixed3 view = normalize(UnityWorldSpaceViewDir(worldPos));  // 视线计算
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(view, reflectDir)), 1 / _Gloss); // Phong模型下高光计算: 与视线与反射光点乘的N(高光系数)次方成正比
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(saturate( dot(view, reflectDir)), _Gloss); // Phong模型下高光计算: 与视线与反射光点乘的N(高光系数)次方成正比
                 o.color = ambient + diffuse + specular;
                 return o;
             }

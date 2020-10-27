@@ -4,7 +4,7 @@
     {
         _Diffuse("Diffuse", Color) = (1,1,1,1)
         _Specular("Specular", Color) = (1,1,1,1)
-        _Gloss("Gloss", range(0,2)) = 1
+        _Gloss("Gloss", range(8.0,256)) = 10
 
     }
         SubShader
@@ -59,7 +59,7 @@
                 fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(i.normal, i.lightdir));
                 fixed3 reflectDir = normalize(reflect(-i.lightdir, i.normal));
                 fixed3 view = normalize(UnityWorldSpaceViewDir(i.worldpos));
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(view, reflectDir)), 1 / _Gloss);
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(view, reflectDir)), _Gloss);
 
                 return fixed4(ambient + diffuse + specular, 1);
             }

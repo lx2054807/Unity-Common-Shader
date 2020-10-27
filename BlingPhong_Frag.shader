@@ -4,7 +4,7 @@
     {
         _Diffuse("Diffuse", Color) = (1,1,1,1)
         _Specular("Specular", Color) = (1,1,1,1)
-        _Gloss("Gloss", range(0,2)) = 1
+        _Gloss("Gloss", range(8.0,256)) = 10
 
     }
         SubShader
@@ -60,7 +60,7 @@
 
                 fixed3 view = normalize(UnityWorldSpaceViewDir(i.worldpos));
                 fixed3 halfDir = normalize(view + i.lightdir);  // 半角计算: 光源与视线的中间位置向量 (v + l)/|v + l|
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(i.normal, halfDir)), 1 / _Gloss);   //BlingPhong模型: 高光与半角和法线的点乘的N次方成正比
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(i.normal, halfDir)), _Gloss);   //BlingPhong模型: 高光与半角和法线的点乘的N次方成正比
 
                 return fixed4(ambient + diffuse + specular, 1);
             }

@@ -4,10 +4,10 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _BumpMap("Normal", 2D) = "bump" {}
-        _BumpScale("NormalScale", range(0,5)) = 1
+        _BumpScale("NormalScale", range(0,1)) = 0.5
         _Diffuse("Diffuse", Color) = (1,1,1,1)
         _Specular("Specular", Color) = (1,1,1,1)
-        _Gloss("Gloss", range(0,2)) = 1
+        _Gloss("Gloss", range(8,256)) = 10
     }
     SubShader
     {
@@ -31,14 +31,22 @@
             half _BumpScale;
             fixed4 _Diffuse;
             fixed4 _Specular;
-            half _Gloss;
+            float _Gloss;
+
+            /*struct a2v 
+            {
+                float4 vertex : POSITION;
+                float4 tangent : TANGENT;
+                float3 normal : NORMAL;
+                float4 texcoord : TEXCOORD0;
+            };*/
 
             struct v2f
             {
                 float4 vertex : SV_POSITION;
-                fixed4 uv : TexCoord0;
-                fixed3 lightDir : TexCoord1;
-                fixed3 viewDir : TexCoord2;
+                fixed4 uv : TEXCOORD0;
+                fixed3 lightDir : TEXCOORD1;
+                fixed3 viewDir : TEXCOORD2;
             };
 
             v2f vert(appdata_tan v) // 数据结构使用appdata_tan
@@ -48,6 +56,10 @@
                 o.uv.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
                 o.uv.zw = TRANSFORM_TEX(v.texcoord, _BumpMap);
 
+                ////compute binormal
+                //float3 binormal = cross(normalize(v.normal), normalize(v.tangent.xyz)) * v.tangent.w;
+                //// construct matrix that transform from object space to tangent space
+                //float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal); // tbn matrix
                 TANGENT_SPACE_ROTATION; //切线空间转换
 
                 o.lightDir = mul(rotation, ObjSpaceLightDir(v.vertex)).xyz;
@@ -62,12 +74,13 @@
                 fixed4 packedNormal = tex2D(_BumpMap, i.uv.zw); // 法线贴图采样
                 fixed3 tanNormal = UnpackNormal(packedNormal);  // 解压到切线空间
                 tanNormal.xy *= _BumpScale;
+                tanNormal.z = sqrt(1.0 - saturate(dot(tanNormal.xy, tanNormal.xy)));
 
                 fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
                 fixed3 albedo = tex2D(_MainTex, i.uv.xy).rgb;
                 fixed3 diffuse = _LightColor0.rgb * albedo * _Diffuse.rgb * max(0, dot(tanNormal, tanLightDir));
                 fixed3 halfDir = normalize(tanViewDir + tanLightDir);
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tanNormal, halfDir)), 1 / _Gloss);
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tanNormal, halfDir)),  _Gloss);
 
                 return fixed4(ambient + diffuse + specular, 1);
             }

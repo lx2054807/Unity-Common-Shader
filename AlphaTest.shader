@@ -9,7 +9,6 @@
     {
         Tags { "RenderType"="TransparentCutOut" "Queue" = "AlphaTest-1" "IgnoreProjector" = "True"}//alphatest = 2450   //需要替换tags 
         LOD 100
-
         Pass
         {
             CGPROGRAM

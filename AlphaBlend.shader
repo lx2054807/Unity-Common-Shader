@@ -3,14 +3,14 @@
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _AlphaScale("AlphaScale", Range(0,1)) = 0.5 
+        _AlphaScale("AlphaScale", Range(0,1)) = 1
     }
         SubShader
         {
             Tags { "RenderType" = "Transparent" "Queue" = "Transparent" "IgnoreProjector" = "True"}// transparent = 3000 透明物体
             LOD 100
             ZWrite Off  // 关闭深度写入
-            Blend SrcAlpha OneMinusSrcAlpha // 混合方程
+            Blend  SrcAlpha OneMinusSrcAlpha // 混合方程
 
             Pass
             {

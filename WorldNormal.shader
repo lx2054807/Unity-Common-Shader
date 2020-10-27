@@ -4,10 +4,11 @@
     {
         _MainTex("Texture", 2D) = "white" {}
         _BumpMap("Normal", 2D) = "bump" {}  // 法线贴图 又叫凹凸贴图
-        _BumpScale("NormalScale", range(0,5)) = 1   //法线强度
+        _BumpScale("NormalScale", range(0,1)) = 0.5   //法线强度
         _Diffuse("Diffuse", Color) = (1,1,1,1)
         _Specular("Specular", Color) = (1,1,1,1)
-        _Gloss("Gloss", range(0,2)) = 1 }
+        _Gloss("Gloss", range(8,256)) = 10 
+    }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
@@ -74,7 +75,7 @@
                 fixed3 albedo = tex2D(_MainTex, i.uv.xy).rgb;
                 fixed3 diffuse = _LightColor0.rgb * albedo * _Diffuse.rgb * max(0, dot(worldNormal, lightDir));
                 fixed3 halfDir = normalize(viewDir + lightDir);
-                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), 1 / _Gloss);
+                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss);
 
                 return fixed4(ambient + diffuse + specular, 1);
             }
