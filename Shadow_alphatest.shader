@@ -207,5 +207,5 @@
 	}
 
 
-		//FallBack "Diffuse"
+		//FallBack "Transparent/Cutout/VertexLit"
 }

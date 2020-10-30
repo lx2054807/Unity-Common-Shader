@@ -4,7 +4,7 @@
 	{
 		_Diffuse("Diffuse",Color) = (1,1,1,1)
 		_Specular("Specular",Color) = (1,1,1,1)
-		_Gloss("Gloss", Range(0,4)) = 1
+		_Gloss("Gloss", Range(8,256)) = 10
 	}
 		SubShader
 	{
@@ -78,7 +78,7 @@
 				//仅仅计算阴影
 				//fixed shadow = SHADOW_ATTENUATION(i);
 
-				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);	
+				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
 
 				return fixed4(ambient + (diffuse + specular) * atten + i.vertexLight,1);
 			}
@@ -144,8 +144,8 @@
 			ENDCG
 		}
 
-		// 使用自带SHADER中的阴影投射
-		UsePass "Legacy Shaders/VertexLit/ShadowCaster"
+				// 使用自带SHADER中的阴影投射
+				UsePass "Legacy Shaders/VertexLit/ShadowCaster"
 
 				//Pass
 				//{
@@ -184,5 +184,5 @@
 	}
 
 
-		//FallBack "Diffuse"
+		FallBack "Diffuse"
 }

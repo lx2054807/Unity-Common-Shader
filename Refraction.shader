@@ -5,7 +5,7 @@
         _MainTex("Texture", 2D) = "white" {}
         _CubeMap("CubeMap", Cube) = "_Skybox" {}
         _Refract("Refract", range(0,1)) = 1 //折射程度
-        _RefractRate("RefractRate", range(0,1)) = 0.5   //折射率
+        _RefractRate("RefractRate", range(0,1)) = 0.5   //折射率比值 n1/n2
     }
         SubShader
         {
