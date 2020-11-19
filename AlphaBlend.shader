@@ -4,6 +4,8 @@
     {
         _MainTex("Texture", 2D) = "white" {}
         _AlphaScale("AlphaScale", Range(0,1)) = 1
+            [HDR]
+            _Color("Color", color) = (1,1,1,1)
     }
         SubShader
         {
@@ -35,6 +37,7 @@
                 sampler2D _MainTex;
                 float4 _MainTex_ST;
                 half _AlphaScale;
+                fixed4 _Color;
 
                 v2f vert(appdata v)
                 {
@@ -49,6 +52,7 @@
                     // sample the texture
                     fixed4 col = tex2D(_MainTex, i.uv);
                     col.a *= _AlphaScale;
+                    col.rgb *= _Color;
                     return col;
                 }
                 ENDCG

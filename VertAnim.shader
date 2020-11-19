@@ -2,6 +2,7 @@
 {
     Properties
     {
+        _Color("Color",color) = (1,1,1,1)
         _MainTex ("Texture", 2D) = "white" {}
         _Range("Range", range(-2,2)) = 1            
         _Frequency("Frequency", range(0,60)) = 20
@@ -37,6 +38,7 @@
             half _Range;
             half _Frequency;
             half _Speed;
+            fixed4 _Color;
 
             v2f vert (appdata v)
             {
@@ -53,6 +55,7 @@
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
+                col *= _Color;
                 return col;
             }
             ENDCG
